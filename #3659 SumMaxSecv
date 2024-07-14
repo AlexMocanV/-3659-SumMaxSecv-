@@ -1,0 +1,58 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+int st[100001];
+int dr[100001];
+std::stack<int>stiva;
+std::stack<int>orig;
+std::vector<int>v;
+int main()
+{
+    long long s=0;
+    int n;
+    std::cin>>n;
+    v.resize(n);
+    for(int i=0;i<n;i++)
+    {
+        std::cin>>v[i];
+        while(!stiva.empty()&&v[stiva.top()]<v[i])
+        {
+            stiva.pop();
+        }
+        if(stiva.empty())
+        {
+            st[i]=i+1;
+        }
+        else
+        {
+            st[i]=i-stiva.top();
+        }
+        stiva.push(i);
+    }
+    while(!stiva.empty())
+    {
+        stiva.pop();
+    }
+    for(int i=n-1;i>-1;i--)
+    {
+        while(!stiva.empty()&&v[stiva.top()]<v[i])
+        {
+            stiva.pop();
+        }
+        if(stiva.empty())
+        {
+            dr[i]=n-i;
+        }
+        else
+        {
+            dr[i]=stiva.top()-i;
+        }
+        stiva.push(i);
+    }
+    for(int i=0;i<n;i++)
+    {
+        s+=1LL*v[i]*st[i]*dr[i];
+    }
+    std::cout<<s;
+    return 0;
+}
